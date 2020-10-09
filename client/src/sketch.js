@@ -33,6 +33,9 @@ class SketchArea extends React.Component {
         }
 
     }
+    onDrop = (acceptedFiles) => {
+        console.log(acceptedFiles);
+    }
 
     _onBackgroundImageDrop = (accepted /*, rejected*/) => {
         if (accepted && accepted.length > 0) {
@@ -58,13 +61,17 @@ class SketchArea extends React.Component {
      render() {
         return (
             <div>
-                <SketchField width='1024px' 
-                         height='768px' 
-                         tool={Tools.Rectangle} 
-                         lineColor='black'
-                         lineWidth={3}/>
+                <SketchField 
+                        name="sketch"
+                        className="canvas-area"
+                        ref={c => (this._sketch = c)}
+                        width='1024px' 
+                        height='768px' 
+                        tool={Tools.Rectangle} 
+                        lineColor='black'
+                        lineWidth={3}/>
                 <div>
-                    <DropArea />
+                    <DropArea onDropIn={this._onBackgroundImageDrop} />
                   </div>
             </div>        
         )

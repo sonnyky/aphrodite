@@ -2,13 +2,16 @@ import React from 'react';
 import Dropzone from 'react-dropzone';
 import './styles/dropzone.css'
 
-const DropArea = () => {
+const DropArea = ({onDropIn}) => {
   
-    const onDrop = (acceptedFiles) => {
-        console.log(acceptedFiles);
-    }
+  
     return (
-        <Dropzone onDrop={onDrop}>
+        <Dropzone 
+        onDrop={onDropIn}
+        accept="image/*"
+        minSize={1024}
+        maxSize={3072000}
+        >
         {({getRootProps, getInputProps, isDragActive}) => (
           <div {...getRootProps({ className: "dropzone" })}>
             <input {...getInputProps()} />
