@@ -39,19 +39,30 @@ class SketchArea extends React.Component {
 
     _onBackgroundImageDrop = (accepted /*, rejected*/) => {
         if (accepted && accepted.length > 0) {
+         
           let sketch = this._sketch;
           let reader = new FileReader();
           let { stretched, stretchedX, stretchedY, originX, originY } = this.state;
           reader.addEventListener(
             'load',
-            () =>
+            (entry) =>{
+              const image = new Image();
               sketch.setBackgroundFromDataUrl(reader.result, {
                 stretched: stretched,
                 stretchedX: stretchedX,
                 stretchedY: stretchedY,
                 originX: originX,
                 originY: originY,
-              }),
+              });
+              image.src = entry.target.result;
+              image.onload = function() {
+                
+                // We have the image widht and height here, so resize canvas to fit the image
+                console.log(this.width);
+                console.log(this.height);
+        
+              };
+            },
             false,
           );
           reader.readAsDataURL(accepted[0]);
