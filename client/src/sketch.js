@@ -30,6 +30,14 @@ class SketchArea extends React.Component {
         this.state={
             sketchWidth: 600,
             sketchHeight: 600,
+            // controlledSize tells the canvas object to use the canvas size and width from user input
+            // If false it will use browser width
+            controlledSize: true,
+            stretched: true,
+            stretchedX: false,
+            stretchedY: false,
+            originX: 'left',
+            originY: 'top',
         }
 
     }
@@ -43,25 +51,31 @@ class SketchArea extends React.Component {
           let sketch = this._sketch;
           let reader = new FileReader();
           let { stretched, stretchedX, stretchedY, originX, originY } = this.state;
+          console.log(sketch);
           reader.addEventListener(
             'load',
             (entry) =>{
               const image = new Image();
-              sketch.setBackgroundFromDataUrl(reader.result, {
-                stretched: stretched,
-                stretchedX: stretchedX,
-                stretchedY: stretchedY,
-                originX: originX,
-                originY: originY,
-              });
               image.src = entry.target.result;
-              image.onload = function() {
+              image.addEventListener('load', ()=>{
+                console.log(image.width);
+                console.log(image.height);
+
+                var oc = document.createElement('canvas'),
+                octx = oc.getContext('2d');
+
+                oc.width = 488;
+                oc.height = 652;
+                octx.drawImage(image, 0, 0, oc.width, oc.height);
+                sketch.setBackgroundFromDataUrl(oc.toDataURL("image/jpeg"), {
+                  stretched: stretched,
+                  stretchedX: stretchedX,
+                  stretchedY: stretchedY,
+                  originX: originX,
+                  originY: originY,
+                });
                 
-                // We have the image widht and height here, so resize canvas to fit the image
-                console.log(this.width);
-                console.log(this.height);
-        
-              };
+              }, false);
             },
             false,
           );
@@ -69,15 +83,19 @@ class SketchArea extends React.Component {
         }
       };
 
-     render() {
+     render = () => {
         return (
             <div>
                 <SketchField 
                         name="sketch"
                         className="canvas-area"
                         ref={c => (this._sketch = c)}
-                        width='1024px' 
-                        height='768px' 
+                        width={
+                          this.state.controlledSize ? this.state.sketchWidth : null
+                        }
+                        height={
+                          this.state.controlledSize ? this.state.sketchHeight : null
+                        }
                         tool={Tools.Rectangle} 
                         lineColor='black'
                         lineWidth={3}/>
