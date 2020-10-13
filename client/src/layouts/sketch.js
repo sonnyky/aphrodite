@@ -1,7 +1,7 @@
 import React from 'react';
 import 'flexboxgrid';
 import {SketchField, Tools} from 'react-sketch';
-import DropArea from './dropzone';
+import DropArea from '../dropzone';
 import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 import color from '@material-ui/core/colors/blueGrey';
 import AppBar from '@material-ui/core/AppBar';
@@ -20,6 +20,8 @@ import Collapse from '@material-ui/core/Collapse';
 import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import '../styles/main.css'
+import Results from '../layouts/results'
 
 
 const styles = {
@@ -49,7 +51,7 @@ const styles = {
       },
       card: {
         margin: '10px 10px 5px 0'
-      }
+      },
 }
 
 class SketchArea extends React.Component {
@@ -69,12 +71,17 @@ class SketchArea extends React.Component {
             originY: 'top',
             canUndo: false,
             canRedo: false,
+            text: 'Cimamon',
+
+            results: [{key: 'company_name', value: 'initName'}, {key: 'company_address', value: 'initAddress'}]
         }
 
     }
     onDrop = (acceptedFiles) => {
         console.log(acceptedFiles);
     }
+
+    _addText = () => this._sketch.addText(this.state.text);
 
     _onBackgroundImageDrop = (accepted /*, rejected*/) => {
         if (accepted && accepted.length > 0) {
@@ -95,8 +102,19 @@ class SketchArea extends React.Component {
                 var oc = document.createElement('canvas'),
                 octx = oc.getContext('2d');
 
-                oc.width = 488;
-                oc.height = 652;
+                var resizedWidth = image.width;
+                var resizedHeight = image.height;
+                if(image.width > 400){
+                  console.log("greater than 1024");
+                  resizedWidth = 400;
+                  resizedHeight = (image.height/image.width) * 400;
+                  console.log(resizedWidth);
+                  console.log(resizedHeight);
+                }
+
+                oc.width = resizedWidth;
+                oc.height = resizedHeight;
+                
                 octx.drawImage(image, 0, 0, oc.width, oc.height);
                 sketch.setBackgroundFromDataUrl(oc.toDataURL("image/jpeg"), {
                   stretched: stretched,
@@ -114,6 +132,14 @@ class SketchArea extends React.Component {
         }
       };
 
+      onResultModified(e, label){
+        console.log("e: " + e.target.value);
+        console.log("label: " + label);
+
+        
+
+      }
+
      render = () => {
       const theme = createMuiTheme({
         typography: {
@@ -124,13 +150,15 @@ class SketchArea extends React.Component {
           secondary: { main: '#11cb5f' }, // This is just green.A700 as hex.
         },
       });
+
+      const results = this.state.results;
         return (
             <MuiThemeProvider theme={theme}>
               <div className="row">
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                  <AppBar title="Sketch Tool" position="static" style={styles.appBar}>
+                  <AppBar title="Document Validator" position="static" style={styles.appBar}>
                     <Toolbar>
-                      <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>Sketch Tool</Typography>
+                      <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>Document Validator</Typography>
                       <IconButton
                         color="primary"
                         disabled={!this.state.canUndo}
@@ -181,37 +209,17 @@ class SketchArea extends React.Component {
                 <div className="col-xs-5 col-sm-5 col-md-3 col-lg-3">
                   <Card style={styles.card}>
                     <CardHeader
-                      title="Tools"
-                      subheader="Available tools"
-                      action={
-                        <IconButton
-                          onClick={(e) => this.setState({ expandTools: !this.state.expandTools })}>
-                          <ExpandMore/>
-                        </IconButton>
-                      }/>
-                    <Collapse in={this.state.expandTools}>
-                      <CardContent>
+                      title="Extracted Information"
+                      subheader="**********"
+                      />
+
+                    <CardContent>
                         <div className="row">
-                          <div className="col-lg-12">
-                            <TextField
-                              select={true}
-                              label="Canvas Tool"
-                              value={this.state.tool}
-                              onChange={this._selectTool}
-                              helperText="Please select Canvas Tool">
-                              <MenuItem value={Tools.Select} key="Select">Select</MenuItem>
-                              <MenuItem value={Tools.Pencil} key="Pencil">Pencil</MenuItem>
-                              <MenuItem value={Tools.Line} key="Line">Line</MenuItem>
-                              <MenuItem value={Tools.Arrow} key="Arrow">Arrow</MenuItem>
-                              <MenuItem value={Tools.Rectangle} key="Rectangle">Rectangle</MenuItem>
-                              <MenuItem value={Tools.Circle} key="Circle">Circle</MenuItem>
-                              <MenuItem value={Tools.Pan} key="Pan">Pan</MenuItem>
-                              <MenuItem value={Tools.RectangleLabel} key="Pan">RectangleLabel</MenuItem>
-                            </TextField>
-                          </div>
+                          {results.map((result, i) => {
+                              return <Results key={i} result={result} onResultModified={this.onResultModified}/>
+                          })}
                         </div>
-                      </CardContent>
-                    </Collapse>
+                    </CardContent>
                   </Card>
                 </div>
               </div>

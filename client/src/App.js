@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import SketchArea from './sketch'
+import SketchArea from './layouts/sketch'
 
 function App() {
   return (

@@ -15,7 +15,7 @@ const DropArea = ({onDropIn}) => {
         {({getRootProps, getInputProps, isDragActive}) => (
           <div {...getRootProps({ className: "dropzone" })}>
             <input {...getInputProps()} />
-            {isDragActive ? "Drop it like it's hot!" : 'Click me or drag a file to upload!'}
+            {isDragActive ? "Drop it like it's hot!" : 'Choose a file to check!'}
           </div>
         )}
       </Dropzone>
