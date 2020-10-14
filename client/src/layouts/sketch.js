@@ -21,7 +21,8 @@ import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import '../styles/main.css'
-import Results from '../layouts/results'
+import Results from '../layouts/results';
+const fabric = require('fabric').fabric;
 
 
 const styles = {
@@ -76,14 +77,25 @@ class SketchArea extends React.Component {
             canRedo: false,
             text: 'Cimamon',
 
-            results: [{identifier: 'company_name', value: 'initName'}, {identifier: 'company_address', value: 'initAddress'}]
+            results: [{identifier: 'company_name', value: '朝日工業'}, {identifier: 'company_address', value: '埼玉県児玉郡神川町渡瀬２２２'}]
         }
 
     }
-    _addText = (topMargin, leftMargin) => {
-      console.log(topMargin);
-      console.log(leftMargin);
-      this._sketch.addText(this.state.text, {left: leftMargin, top: topMargin});
+    _addText = (text, topMargin, leftMargin) => {
+      
+      let canvas = this._sketch._fc;
+      let options = {left: leftMargin, top: topMargin};
+      console.log(canvas);
+      let iText = new fabric.IText(text, options);
+      iText.set({
+        'left': options.left,
+        'top': options.top,
+        'fontSize': 14,
+        'backgroundColor': 'rgb(200,200,200)',
+        'fill': 'rgb(255,0,0)'
+      });
+
+      canvas.add(iText);
     }
     _onBackgroundImageDrop = (accepted /*, rejected*/) => {
         if (accepted && accepted.length > 0) {
@@ -147,11 +159,14 @@ class SketchArea extends React.Component {
       }
 
       onBoundingBox = () => {
+
+        if(this._sketch._history.current == null) return;
+
         console.log(this._sketch._history.current);
-        var topText = this._sketch._history.current[0].top - 10;
+        var topText = this._sketch._history.current[0].top - 20;
         var leftText = this._sketch._history.current[0].left;
 
-        this._addText(topText, leftText);
+        this._addText(this.state.results[0].value, topText, leftText);
       }
 
      render = () => {
