@@ -52,6 +52,9 @@ const styles = {
       card: {
         margin: '10px 10px 5px 0'
       },
+      revised: {
+        color: 'red'
+      }
 }
 
 class SketchArea extends React.Component {
@@ -77,8 +80,11 @@ class SketchArea extends React.Component {
         }
 
     }
-    _addText = () => this._sketch.addText(this.state.text);
-
+    _addText = (topMargin, leftMargin) => {
+      console.log(topMargin);
+      console.log(leftMargin);
+      this._sketch.addText(this.state.text, {left: leftMargin, top: topMargin});
+    }
     _onBackgroundImageDrop = (accepted /*, rejected*/) => {
         if (accepted && accepted.length > 0) {
          
@@ -138,6 +144,14 @@ class SketchArea extends React.Component {
               })
           }
         }
+      }
+
+      onBoundingBox = () => {
+        console.log(this._sketch._history.current);
+        var topText = this._sketch._history.current[0].top - 10;
+        var leftText = this._sketch._history.current[0].left;
+
+        this._addText(topText, leftText);
       }
 
      render = () => {
@@ -202,7 +216,10 @@ class SketchArea extends React.Component {
                           }
                           tool={Tools.Rectangle} 
                           lineColor='black'
-                          lineWidth={3}/>
+                          lineWidth={2}
+                          onChange={this.onBoundingBox}
+
+                          />
                 </div>
 
 
