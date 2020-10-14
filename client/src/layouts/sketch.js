@@ -73,14 +73,10 @@ class SketchArea extends React.Component {
             canRedo: false,
             text: 'Cimamon',
 
-            results: [{key: 'company_name', value: 'initName'}, {key: 'company_address', value: 'initAddress'}]
+            results: [{identifier: 'company_name', value: 'initName'}, {identifier: 'company_address', value: 'initAddress'}]
         }
 
     }
-    onDrop = (acceptedFiles) => {
-        console.log(acceptedFiles);
-    }
-
     _addText = () => this._sketch.addText(this.state.text);
 
     _onBackgroundImageDrop = (accepted /*, rejected*/) => {
@@ -132,12 +128,16 @@ class SketchArea extends React.Component {
         }
       };
 
-      onResultModified(e, label){
-        console.log("e: " + e.target.value);
-        console.log("label: " + label);
-
-        
-
+      onResultModified = (e, label) => {
+        for(var index in this.state.results){
+          if(this.state.results[index].identifier == label){
+            var temp = this.state.results;
+            temp[index].value = e.target.value;
+              this.setState({
+                results: temp
+              })
+          }
+        }
       }
 
      render = () => {

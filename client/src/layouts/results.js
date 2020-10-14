@@ -6,9 +6,9 @@ const Results = ({result, onResultModified}) => (
 
     <div className="col-lg-12 detection_result">
         <TextField
-            label={result.key}
+            label={result.identifier}
             helperText=''
-            onChange={(e) => onResultModified(e, result.key)}
+            onChange={(e) => onResultModified(e, result.identifier)}
             value={result.value}/>
     </div>
 )
