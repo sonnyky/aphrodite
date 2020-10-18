@@ -121,15 +121,9 @@ class SketchArea extends React.Component {
 
                 oc.width = image.width;
                 oc.height = image.height;
-                var resizedWidth = image.width;
-                var resizedHeight = image.height;
+                var resizedWidth = this.state.canvasRect.width;
+                var resizedHeight = (image.height/image.width) * this.state.canvasRect.width;
                 
-                if(image.width > 550){
-                  console.log("greater than 1024");
-                  resizedWidth = 550;
-                  resizedHeight = (image.height/image.width) * 550;
-                
-                }
                 oc.width = resizedWidth;
                 oc.height = resizedHeight;
                 
