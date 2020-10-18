@@ -10,8 +10,12 @@ const Results = ({result, onResultModified, fontStyle}) => (
             helperText=''
             onChange={(e) => onResultModified(e, result.identifier)}
             value={result.value}
+            fullWidth = {true}
             InputProps = {{
+                style: {
+                    fontSize: 16,
 
+                }
             }}
             />
     </div>

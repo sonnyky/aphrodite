@@ -51,7 +51,7 @@ const styles = {
         backgroundColor: '#ffdddd',
       },
       card: {
-        margin: '10px 10px 5px 0'
+        margin: '5px '
       },
       revised: {
         color: 'red'
@@ -76,11 +76,13 @@ class SketchArea extends React.Component {
             canUndo: false,
             canRedo: false,
             text: 'Cimamon',
-
-            results: [{identifier: 'company_name', value: '朝日工業'}, {identifier: 'company_address', value: '埼玉県児玉郡神川町渡瀬２２２'}]
+            // To modify dinamically the canvas element according to image size
+            canvasRect: {},
+            results: [{identifier: 'company_name', value: ''}, {identifier: 'company_address', value: ''}]
         }
 
     }
+    canvasRef = node => node && this.setState({canvasRect: node.getBoundingClientRect()});
     _addText = (text, topMargin, leftMargin) => {
       
       let canvas = this._sketch._fc;
@@ -110,34 +112,40 @@ class SketchArea extends React.Component {
               const image = new Image();
               image.src = entry.target.result;
               image.addEventListener('load', ()=>{
-                console.log(image.width);
-                console.log(image.height);
-
+                
+                console.log("canvas");
+                console.log(JSON.stringify(this.state.canvasRect));
+                
                 var oc = document.createElement('canvas'),
                 octx = oc.getContext('2d');
 
+                oc.width = image.width;
+                oc.height = image.height;
                 var resizedWidth = image.width;
                 var resizedHeight = image.height;
-                if(image.width > 400){
+                
+                if(image.width > 550){
                   console.log("greater than 1024");
-                  resizedWidth = 400;
-                  resizedHeight = (image.height/image.width) * 400;
-                  console.log(resizedWidth);
-                  console.log(resizedHeight);
+                  resizedWidth = 550;
+                  resizedHeight = (image.height/image.width) * 550;
+                
                 }
-
                 oc.width = resizedWidth;
                 oc.height = resizedHeight;
                 
                 octx.drawImage(image, 0, 0, oc.width, oc.height);
                 sketch.setBackgroundFromDataUrl(oc.toDataURL("image/jpeg"), {
-                  stretched: stretched,
-                  stretchedX: stretchedX,
-                  stretchedY: stretchedY,
+                  stretched: false,
+                  stretchedX: false,
+                  stretchedY: false,
                   originX: originX,
                   originY: originY,
                 });
-                
+                this.setState({
+                  results: [{identifier: 'company_name', value: '朝日工業'}, {identifier: 'company_address', value: '埼玉県児玉郡神川町渡瀬２２２'}],
+                  sketchWidth: resizedWidth,
+                  sketchHeight: resizedHeight
+                })
               }, false);
             },
             false,
@@ -218,7 +226,9 @@ class SketchArea extends React.Component {
               </div>
 
               <div className="row">
-                <div className="col-xs-7 col-sm-7 col-md-9 col-lg-9">
+                <div className="col-xs-7 col-sm-7 col-md-8 col-lg-auto"
+                  ref = {this.canvasRef}
+                >
                   <SketchField 
                           name="sketch"
                           className="canvas-area"
@@ -238,7 +248,7 @@ class SketchArea extends React.Component {
                 </div>
 
 
-                <div className="col-xs-5 col-sm-5 col-md-3 col-lg-3">
+                <div className="col-xs-5 col-sm-5 col-md-4 col-lg-4">
                   <Card style={styles.card}>
                     <CardHeader
                       title="Extracted Information"
