@@ -22,9 +22,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import '../styles/main.css'
 import Results from '../layouts/results';
+import {ArrowRightSquare, ArrowLeftSquare} from 'react-bootstrap-icons';
+import {Button} from 'react-bootstrap';
+
 const fabric = require('fabric').fabric;
-
-
 const styles = {
   root: {
     padding: '3px',
@@ -241,7 +242,6 @@ class SketchArea extends React.Component {
                           />
                 </div>
 
-
                 <div className="col-xs-5 col-sm-5 col-md-4 col-lg-4">
                   <Card style={styles.card}>
                     <CardHeader
@@ -260,8 +260,18 @@ class SketchArea extends React.Component {
                 </div>
               </div>
 
-              <div>
-                <DropArea onDropIn={this._onBackgroundImageDrop} />
+              <div className='row'>
+              <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2" >
+                  <ArrowLeftSquare />
+                </div>
+                <div className="col-xs-4 col-sm-4 col-md-auto col-lg-auto" >
+                  <DropArea onDropIn={this._onBackgroundImageDrop} />
+                </div>
+                <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2" >
+                  <Button>
+                    <ArrowRightSquare className="text-arrow"/>
+                  </Button>
+                </div>
               </div>
                   
             </MuiThemeProvider>        
