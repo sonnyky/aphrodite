@@ -3,3 +3,9 @@
     font-size: 0.5em;
     color: #999999;
 }
+
+#save_button{
+    background: #3182CE;
+    color: white;
+    margin-left: 3vw;
+  }

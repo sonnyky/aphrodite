@@ -14,14 +14,19 @@ import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import '../styles/main.css'
+import '../styles/icon.css'
 import Results from '../layouts/results';
-import {ArrowRightSquare, ArrowLeftSquare} from 'react-bootstrap-icons';
+import {ArrowRight, ArrowLeft} from 'react-bootstrap-icons';
 import {Button} from 'react-bootstrap';
 
 import RectangleIcon from '../icons/rectangle_icon';
 import OverviewIcon from '../icons/overview_icon';
 import {ReactComponent as CompanyLogo} from '../images/logo.svg';
-import PreviousButton from '../buttons/custom_button'
+import PreviousButton from '../buttons/custom_button';
+import NextButton from '../buttons/custom_button';
+import GalleryButton from '../buttons/custom_button';
+import {ReactComponent as GalleryIcon} from '../images/gallery.svg';
+import ClassNames from '../buttons/custom_button';
 
 const fabric = require('fabric').fabric;
 const styles = {
@@ -64,6 +69,9 @@ const styles = {
     },
     logo:{
       marginRight: "20vw"
+    },
+    saveButton: {
+      background: '#3182CE',
     }
 }
 
@@ -201,9 +209,14 @@ class SketchArea extends React.Component {
                       <CompanyLogo style={styles.logo}/>
                       <OverviewIcon/>
                       <RectangleIcon />
-                      <div style={{marginRight: '10vw'}}>
-                        <PreviousButton/>
+                      <div style={{marginLeft: '7vw'}}>
+                        <PreviousButton style={{background: 'white'}} children={<div><ArrowLeft/> Prev</div>}/>
+                        <NextButton style={{background: 'white'}} children={<div>Next <ArrowRight/></div>}/>
                       </div>
+                      <div style={{marginLeft: '7vw'}}>
+                        <GalleryButton style={{background: 'white'}} children={<div><GalleryIcon/> Open Gallery</div>}/>
+                      </div>
+                      <ClassNames id="save_button">Save</ClassNames>
                     </Toolbar>
                   </AppBar>
                 </div>
@@ -249,19 +262,11 @@ class SketchArea extends React.Component {
                 </div>
               </div>
 
-              <div className='row'>
-              <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2" >
-                  <ArrowLeftSquare />
-                </div>
-                <div className="col-xs-4 col-sm-4 col-md-auto col-lg-auto" >
-                  <DropArea onDropIn={this._onBackgroundImageDrop} />
-                </div>
-                <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2" >
-                  <Button>
-                    <ArrowRightSquare fill='red' className="text-arrow"/>
-                  </Button>
-                </div>
+              
+              <div className="col-xs-4 col-sm-4 col-md-auto col-lg-auto" >
+                <DropArea onDropIn={this._onBackgroundImageDrop} />
               </div>
+                
                   
             </MuiThemeProvider>        
         )
