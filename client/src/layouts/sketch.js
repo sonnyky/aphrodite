@@ -6,13 +6,6 @@ import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 import color from '@material-ui/core/colors/blueGrey';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
-import Typography from '@material-ui/core/Typography/Typography';
-import UndoIcon from '@material-ui/icons/Undo';
-import RedoIcon from '@material-ui/icons/Redo';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import SaveIcon from '@material-ui/icons/Save';
-import DownloadIcon from '@material-ui/icons/CloudDownload';
 import Card from '@material-ui/core/Card';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -26,7 +19,9 @@ import {ArrowRightSquare, ArrowLeftSquare} from 'react-bootstrap-icons';
 import {Button} from 'react-bootstrap';
 
 import RectangleIcon from '../icons/rectangle_icon';
+import OverviewIcon from '../icons/overview_icon';
 import {ReactComponent as CompanyLogo} from '../images/logo.svg';
+import PreviousButton from '../buttons/custom_button'
 
 const fabric = require('fabric').fabric;
 const styles = {
@@ -66,6 +61,9 @@ const styles = {
     headerButton: {
       color: 'red',
       fill: 'red'
+    },
+    logo:{
+      marginRight: "20vw"
     }
 }
 
@@ -200,38 +198,12 @@ class SketchArea extends React.Component {
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                   <AppBar title="Document Validator" position="static" style={styles.appBar}>
                     <Toolbar>
-                      <CompanyLogo/>
-                      <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>Document Validator</Typography>
-                      <IconButton>
-                        <RectangleIcon/>
-                      </IconButton>
-                      <IconButton
-                        style={{ color: 'gray' }}
-                        disabled={!this.state.canUndo}
-                        onClick={this._undo}>
-                        <UndoIcon/>
-                      </IconButton>
-                      <IconButton
-                        style={{ color: 'gray' }}
-                        disabled={!this.state.canRedo}
-                        onClick={this._redo}>
-                        <RedoIcon/>
-                      </IconButton>
-                      <IconButton
-                        style={{ color: 'gray' }}
-                        onClick={this._save}>
-                        <SaveIcon/>
-                      </IconButton>
-                      <IconButton
-                      style={{ color: 'gray' }}
-                        onClick={this._download}>
-                        <DownloadIcon/>
-                      </IconButton>
-                      <IconButton
-                      style={{ color: 'gray' }}
-                        onClick={this._clear}>
-                        <DeleteIcon/>
-                      </IconButton>
+                      <CompanyLogo style={styles.logo}/>
+                      <OverviewIcon/>
+                      <RectangleIcon />
+                      <div style={{marginRight: '10vw'}}>
+                        <PreviousButton/>
+                      </div>
                     </Toolbar>
                   </AppBar>
                 </div>
