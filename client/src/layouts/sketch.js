@@ -25,6 +25,9 @@ import Results from '../layouts/results';
 import {ArrowRightSquare, ArrowLeftSquare} from 'react-bootstrap-icons';
 import {Button} from 'react-bootstrap';
 
+import RectangleIcon from '../icons/rectangle_icon';
+import {ReactComponent as CompanyLogo} from '../images/logo.svg';
+
 const fabric = require('fabric').fabric;
 const styles = {
   root: {
@@ -34,29 +37,36 @@ const styles = {
     margin: '10px 10px 5px 10px',
     justifyContent: 'space-around',
   },
-    dropArea: {
-        width: '100%',
-        height: '10%',
-        border: '2px dashed rgb(102, 102, 102)',
-        borderStyle: 'dashed',
-        borderRadius: '5px',
-        textAlign: 'center',
-        paddingTop: '20px',
-      },
-      activeStyle: {
-        borderStyle: 'solid',
-        backgroundColor: '#eee',
-      },
-      rejectStyle: {
-        borderStyle: 'solid',
-        backgroundColor: '#ffdddd',
-      },
-      card: {
-        margin: '5px '
-      },
-      revised: {
-        color: 'red'
-      }
+  dropArea: {
+      width: '100%',
+      height: '10%',
+      border: '2px dashed rgb(102, 102, 102)',
+      borderStyle: 'dashed',
+      borderRadius: '5px',
+      textAlign: 'center',
+      paddingTop: '20px',
+    },
+    activeStyle: {
+      borderStyle: 'solid',
+      backgroundColor: '#eee',
+    },
+    rejectStyle: {
+      borderStyle: 'solid',
+      backgroundColor: '#ffdddd',
+    },
+    card: {
+      margin: '5px '
+    },
+    revised: {
+      color: 'red'
+    },
+    appBar: {
+      backgroundColor: '#262626'
+    },
+    headerButton: {
+      color: 'red',
+      fill: 'red'
+    }
 }
 
 class SketchArea extends React.Component {
@@ -190,28 +200,35 @@ class SketchArea extends React.Component {
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                   <AppBar title="Document Validator" position="static" style={styles.appBar}>
                     <Toolbar>
+                      <CompanyLogo/>
                       <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>Document Validator</Typography>
+                      <IconButton>
+                        <RectangleIcon/>
+                      </IconButton>
                       <IconButton
-                        color="primary"
+                        style={{ color: 'gray' }}
                         disabled={!this.state.canUndo}
                         onClick={this._undo}>
                         <UndoIcon/>
                       </IconButton>
                       <IconButton
-                        color="primary"
+                        style={{ color: 'gray' }}
                         disabled={!this.state.canRedo}
                         onClick={this._redo}>
                         <RedoIcon/>
                       </IconButton>
                       <IconButton
+                        style={{ color: 'gray' }}
                         onClick={this._save}>
                         <SaveIcon/>
                       </IconButton>
                       <IconButton
+                      style={{ color: 'gray' }}
                         onClick={this._download}>
                         <DownloadIcon/>
                       </IconButton>
                       <IconButton
+                      style={{ color: 'gray' }}
                         onClick={this._clear}>
                         <DeleteIcon/>
                       </IconButton>
@@ -269,7 +286,7 @@ class SketchArea extends React.Component {
                 </div>
                 <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2" >
                   <Button>
-                    <ArrowRightSquare className="text-arrow"/>
+                    <ArrowRightSquare fill='red' className="text-arrow"/>
                   </Button>
                 </div>
               </div>
