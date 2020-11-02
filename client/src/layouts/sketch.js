@@ -9,7 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import Card from '@material-ui/core/Card';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import CardHeader from '@material-ui/core/CardHeader';
-import Collapse from '@material-ui/core/Collapse';
+import Fade from '@material-ui/core/Fade';
 import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
@@ -93,6 +93,7 @@ class SketchArea extends React.Component {
             canUndo: false,
             canRedo: false,
             text: 'Cimamon',
+            expandTools: false,
             // To modify dinamically the canvas element according to image size
             canvasRect: {},
             results: [{identifier: 'company_name', value: ''}, {identifier: 'company_address', value: ''}]
@@ -207,13 +208,13 @@ class SketchArea extends React.Component {
                   <AppBar title="Document Validator" position="static" style={styles.appBar}>
                     <Toolbar>
                       <CompanyLogo style={styles.logo}/>
-                      <OverviewIcon/>
+                      <OverviewIcon onClickCallback={(e) => this.setState({ expandTools: !this.state.expandTools })} />
                       <RectangleIcon />
                       <div style={{marginLeft: '7vw'}}>
                         <PreviousButton style={{background: 'white'}} children={<div><ArrowLeft/> Prev</div>}/>
                         <NextButton style={{background: 'white'}} children={<div>Next <ArrowRight/></div>}/>
                       </div>
-                      <div style={{marginLeft: '7vw'}}>
+                      <div style={{marginLeft: '7vw'}} >
                         <GalleryButton style={{background: 'white'}} children={<div><GalleryIcon/> Open Gallery</div>}/>
                       </div>
                       <ClassNames id="save_button">Save</ClassNames>
@@ -223,6 +224,25 @@ class SketchArea extends React.Component {
               </div>
 
               <div className="row">
+                <div className="col-xs-5 col-sm-5 col-md-4 col-lg-4">
+                  <Fade in={this.state.expandTools}>
+                    <Card style={styles.card}>
+                      <CardHeader
+                        title="Extracted Information"
+                        subheader="**********"
+                        />
+                      
+                        <CardContent>
+                            <div className="row">
+                              {results.map((result, i) => {
+                                  return <Results key={i} result={result} onResultModified={this.onResultModified}/>
+                              })}
+                            </div>
+                        </CardContent>
+                      
+                    </Card>
+                  </Fade>
+                </div>
                 <div className="col-xs-7 col-sm-7 col-md-8 col-lg-auto"
                   ref = {this.canvasRef}
                 >
@@ -242,24 +262,7 @@ class SketchArea extends React.Component {
                           onChange={this.onBoundingBox}
 
                           />
-                </div>
-
-                <div className="col-xs-5 col-sm-5 col-md-4 col-lg-4">
-                  <Card style={styles.card}>
-                    <CardHeader
-                      title="Extracted Information"
-                      subheader="**********"
-                      />
-
-                    <CardContent>
-                        <div className="row">
-                          {results.map((result, i) => {
-                              return <Results key={i} result={result} onResultModified={this.onResultModified}/>
-                          })}
-                        </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                </div>                
               </div>
 
               

@@ -20,9 +20,9 @@ const styles = {
 };
 
 function ClassNames(props) {
-  const { classes, children, className, ...other } = props;
+  const { classes, children, className, onClickCallback, ...other } = props;
   return (
-    <Button className={classes.root} {...other}>
+    <Button onClick={onClickCallback} className={classes.root} {...other}>
       {children || 'class names'}
     </Button>
   );
@@ -32,6 +32,7 @@ ClassNames.propTypes = {
   children: PropTypes.node,
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
+  onClickCallback: PropTypes.func
 };
 
 export default withStyles(styles)(ClassNames);
