@@ -211,11 +211,11 @@ class SketchArea extends React.Component {
                       <OverviewIcon onClickCallback={(e) => this.setState({ expandTools: !this.state.expandTools })} />
                       <RectangleIcon />
                       <div style={{marginLeft: '7vw'}}>
-                        <PreviousButton style={{background: 'white'}} children={<div><ArrowLeft/> Prev</div>}/>
-                        <NextButton style={{background: 'white'}} children={<div>Next <ArrowRight/></div>}/>
+                        <PreviousButton style={{background: 'white'}} children={<div style={{display:'flex', alignItems:'center', justifyContent:'center'}}><ArrowLeft/> Prev</div>}/>
+                        <NextButton style={{background: 'white'}} children={<div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>Next <ArrowRight/></div>}/>
                       </div>
                       <div style={{marginLeft: '7vw'}} >
-                        <GalleryButton style={{background: 'white'}} children={<div><GalleryIcon/> Open Gallery</div>}/>
+                        <GalleryButton style={{background: 'white'}} children={<div style={{display:'flex', alignItems:'center', justifyContent:'center'}}><GalleryIcon/> Open Gallery</div>}/>
                       </div>
                       <ClassNames id="save_button">Save</ClassNames>
                     </Toolbar>
