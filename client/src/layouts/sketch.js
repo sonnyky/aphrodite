@@ -25,8 +25,10 @@ import {ReactComponent as CompanyLogo} from '../images/logo.svg';
 import PreviousButton from '../buttons/custom_button';
 import NextButton from '../buttons/custom_button';
 import GalleryButton from '../buttons/custom_button';
-import {ReactComponent as GalleryIcon} from '../images/gallery.svg';
+import {ReactComponent as GalleryIconTopBar} from '../images/gallery_icon_topbar.svg';
 import ClassNames from '../buttons/custom_button';
+
+import Gallery from './gallery'
 
 const fabric = require('fabric').fabric;
 const styles = {
@@ -94,6 +96,7 @@ class SketchArea extends React.Component {
             canRedo: false,
             text: 'Cimamon',
             expandTools: false,
+            expandGallery:false,
             // To modify dinamically the canvas element according to image size
             canvasRect: {},
             results: [{identifier: 'company_name', value: ''}, {identifier: 'company_address', value: ''}]
@@ -204,46 +207,49 @@ class SketchArea extends React.Component {
         return (
             <MuiThemeProvider theme={theme}>
               <div className="row">
-                <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12" style={{padding:'0'}}>
                   <AppBar title="Document Validator" position="static" style={styles.appBar}>
-                    <Toolbar>
+                    <Toolbar style={{height:'7vh'}}>
                       <CompanyLogo style={styles.logo}/>
                       <OverviewIcon onClickCallback={(e) => this.setState({ expandTools: !this.state.expandTools })} />
                       <RectangleIcon />
                       <div style={{marginLeft: '7vw'}}>
-                        <PreviousButton style={{background: 'white'}} children={<div style={{display:'flex', alignItems:'center', justifyContent:'center'}}><ArrowLeft/> Prev</div>}/>
-                        <NextButton style={{background: 'white'}} children={<div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>Next <ArrowRight/></div>}/>
+                        <PreviousButton style={{background: 'white'}} children={<div style={{display:'flex', alignItems:'center', justifyContent:'center'}}><ArrowLeft style={{marginRight:'1vw'}}/>Prev</div>}/>
+                        <NextButton style={{background: 'white'}} children={<div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>Next<ArrowRight style={{marginLeft:'1vw'}}/></div>}/>
                       </div>
                       <div style={{marginLeft: '7vw'}} >
-                        <GalleryButton style={{background: 'white'}} children={<div style={{display:'flex', alignItems:'center', justifyContent:'center'}}><GalleryIcon/> Open Gallery</div>}/>
+                        <GalleryButton onClickCallback={(e) => this.setState({ expandGallery: !this.state.expandGallery })} style={{background: 'white'}} children={<div style={{display:'flex', alignItems:'center', justifyContent:'center'}}><GalleryIconTopBar/> Open Gallery</div>}/>
                       </div>
                       <ClassNames id="save_button">Save</ClassNames>
                     </Toolbar>
                   </AppBar>
                 </div>
               </div>
+              <div style={{position:'fixed', top:'7vh', zIndex:'1'}} id='annotation_results'>
+                <Fade in={this.state.expandTools}>
+                  <Card style={styles.card}>
+                    <CardHeader
+                      title="Extracted Information"
+                      subheader="**********"
+                      />
+                    
+                      <CardContent>
+                          <div className="row">
+                            {results.map((result, i) => {
+                                return <Results key={i} result={result} onResultModified={this.onResultModified}/>
+                            })}
+                          </div>
+                      </CardContent>
+                    
+                  </Card>
+                </Fade>
+              </div>
+
+              <Gallery expandGallery={this.state.expandGallery} />
+
 
               <div className="row">
-                <div className="col-xs-5 col-sm-5 col-md-4 col-lg-4">
-                  <Fade in={this.state.expandTools}>
-                    <Card style={styles.card}>
-                      <CardHeader
-                        title="Extracted Information"
-                        subheader="**********"
-                        />
-                      
-                        <CardContent>
-                            <div className="row">
-                              {results.map((result, i) => {
-                                  return <Results key={i} result={result} onResultModified={this.onResultModified}/>
-                              })}
-                            </div>
-                        </CardContent>
-                      
-                    </Card>
-                  </Fade>
-                </div>
-                <div className="col-xs-7 col-sm-7 col-md-8 col-lg-auto"
+                <div className="col-lg-auto"
                   ref = {this.canvasRef}
                 >
                   <SketchField 
