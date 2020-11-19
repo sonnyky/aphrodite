@@ -28,7 +28,7 @@ import GalleryButton from '../buttons/custom_button';
 import {ReactComponent as GalleryIconTopBar} from '../images/gallery_icon_topbar.svg';
 import ClassNames from '../buttons/custom_button';
 
-import Gallery from './gallery'
+import FileGallery from './file_gallery'
 
 const fabric = require('fabric').fabric;
 const styles = {
@@ -97,9 +97,9 @@ class SketchArea extends React.Component {
             text: 'Cimamon',
             expandTools: false,
             expandGallery:false,
-            // To modify dinamically the canvas element according to image size
-            canvasRect: {},
-            results: [{identifier: 'company_name', value: ''}, {identifier: 'company_address', value: ''}]
+            canvasRect: {}, // To modify dinamically the canvas element according to image size
+            results: [{identifier: 'company_name', value: ''}, {identifier: 'company_address', value: ''}],
+            files: [{fileType:'jpg', fileName:'test.jpg'}, {fileType:'png', fileName:'test2.png'}]
         }
 
     }
@@ -204,6 +204,7 @@ class SketchArea extends React.Component {
       });
 
       const results = this.state.results;
+      const loadedFiles = this.state.files;
         return (
             <MuiThemeProvider theme={theme}>
               <div className="row">
@@ -245,7 +246,7 @@ class SketchArea extends React.Component {
                 </Fade>
               </div>
 
-              <Gallery expandGallery={this.state.expandGallery} />
+              <FileGallery expandGallery={this.state.expandGallery} loadedFiles={this.state.files}/>
 
 
               <div className="row">
